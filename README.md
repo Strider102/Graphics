@@ -1,7 +1,7 @@
 # Graphics
 
 # Week of 1/29/18
-![alt text](Images/"Triangle 1.png")
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/Triangle%201.png)
 ![alt text](Images/"Triangle 2.png")
 	a. The theme is internet memes.
 	b. We plan on one main room now with potential to expand.
