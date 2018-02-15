@@ -10,6 +10,6 @@
 	e. For our sculpture, we will use Ugandan Knuckles. We should be able to find models online, but the character isn't too detailed so we could potentially do it on our own. <br />
 	f. For the paintings, we will have some greatest hits of memes. These will be just like paintings hung on the wall with frames around them.
 
-#Week of 2/12/18
+# Week of 2/12/18
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/blender_screenshot.png) <br />
-[a link](https://github.com/Strider102/Graphics/blob/master/Museum.blender)
+[Access Blender File Here!](https://github.com/Strider102/Graphics/blob/master/Museum.blend)
