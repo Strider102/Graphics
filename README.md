@@ -13,3 +13,6 @@
 # Week of 2/12/18
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/blender_screenshot.png) <br />
 [Access Blender File Here!](https://github.com/Strider102/Graphics/blob/master/Museum.blend)
+
+# Week of 2/26/18
+Attempts have been made to get an object loader working, but we are still learning more about the details that have not yet been implemented or tested.
