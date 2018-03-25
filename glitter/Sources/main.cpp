@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include "Object.h"
-#include "shader.h"
+#include "model.h"
+#include <GLFW/glfw3.h>
 #include "camera.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -47,17 +47,13 @@ int init(GLFWwindow **windowLoc)
     return 0;
 }
 
-void initObjects(unsigned int numObjects, Model **obj, GLuint *vao, GLuint shaderProgram)
+void initObjects(unsigned int numObjects, Model **obj, GLuint *vao)
 {
-    obj[0] = new Model("assets/cube.obj");
-    obj[1] = new Model("assets/Pikachu.obj");
-
     glGenVertexArrays(numObjects, vao);
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    for (unsigned int i = 0; i < numObjects; i++) {
-        glBindVertexArray(vao[i]);
-        obj[i]->load(shaderProgram);
-    }
+    glBindVertexArray(vao[0]);
+    obj[0] = new Model("assets/cube.obj");
+    glBindVertexArray(vao[1]);
+    obj[1] = new Model("assets/Pikachu.obj");
 }
 
 int main(){
@@ -77,9 +73,13 @@ int main(){
     Shader shader = Shader("assets/vShader.vs", "assets/fShader.fs");
     camera = new Camera();
 
+    shader.use();
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glEnable(GL_DEPTH_TEST);
+
     Model **obj = (Model **) malloc(sizeof(Model **) * numObjects);
     GLuint *vao = (GLuint *) malloc(sizeof(GLuint *) * numObjects);
-    initObjects(numObjects, obj, vao, shader.ID);
+    initObjects(numObjects, obj, vao);
 
     // render loop
     // -----------
@@ -89,7 +89,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindVertexArray(vao[curObject]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        obj[curObject]->draw();
+        obj[curObject]->Draw(shader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
