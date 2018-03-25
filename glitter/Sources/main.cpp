@@ -47,10 +47,10 @@ int init(GLFWwindow **windowLoc)
     return 0;
 }
 
-void initObjects(unsigned int numObjects, Object **obj, GLuint *vao, GLuint shaderProgram)
+void initObjects(unsigned int numObjects, Model **obj, GLuint *vao, GLuint shaderProgram)
 {
-    obj[0] = new Object("assets/cube.obj");
-    obj[1] = new Object("assets/Pikachu.obj");
+    obj[0] = new Model("assets/cube.obj");
+    obj[1] = new Model("assets/Pikachu.obj");
 
     glGenVertexArrays(numObjects, vao);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
@@ -77,7 +77,7 @@ int main(){
     Shader shader = Shader("assets/vShader.vs", "assets/fShader.fs");
     camera = new Camera();
 
-    Object **obj = (Object **) malloc(sizeof(Object **) * numObjects);
+    Model **obj = (Model **) malloc(sizeof(Model **) * numObjects);
     GLuint *vao = (GLuint *) malloc(sizeof(GLuint *) * numObjects);
     initObjects(numObjects, obj, vao, shader.ID);
 
