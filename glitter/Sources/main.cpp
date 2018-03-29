@@ -1,16 +1,20 @@
 #include <stdlib.h>
+#include <ctime>
 #include "model.h"
 #include <GLFW/glfw3.h>
+#include <glm/gtc/type_ptr.hpp>
 #include "camera.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void cursor_pos_callback(GLFWwindow* winddow, double xpos, double ypos);
+void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 //settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-const unsigned int numObjects = 2;
+const unsigned int numObjects = 1;
 static unsigned int curObject = 0;
+static std::clock_t start = 0;
 
 Camera *camera = nullptr;
 
@@ -35,6 +39,7 @@ int init(GLFWwindow **windowLoc)
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_pos_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -50,10 +55,10 @@ int init(GLFWwindow **windowLoc)
 void initObjects(unsigned int numObjects, Model **obj, GLuint *vao)
 {
     glGenVertexArrays(numObjects, vao);
+    //glBindVertexArray(vao[0]);
+    //obj[0] = new Model("assets/cube.obj");
     glBindVertexArray(vao[0]);
-    obj[0] = new Model("assets/cube.obj");
-    glBindVertexArray(vao[1]);
-    obj[1] = new Model("assets/Pikachu.obj");
+    obj[0] = new Model("assets/Pikachu.obj");
 }
 
 int main(){
@@ -88,6 +93,8 @@ int main(){
         // ------
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        shader.setMatrix("camera_pos", (float *)glm::value_ptr(camera->GetViewMatrix()));
+
         glBindVertexArray(vao[curObject]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         obj[curObject]->Draw(shader);
 
@@ -120,9 +127,30 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
         curObject = (curObject + 1) % numObjects;
     }
+    float time = (std::clock() - start) / (float) CLOCKS_PER_SEC;
+    if (start > 0) {
+        if (key == GLFW_KEY_W) {
+            camera->ProcessKeyboard(FORWARD, time);
+        }
+        if (key == GLFW_KEY_A) {
+            camera->ProcessKeyboard(LEFT, time);
+        }
+        if (key == GLFW_KEY_D) {
+            camera->ProcessKeyboard(RIGHT, time);
+        }
+        if (key == GLFW_KEY_S) {
+            camera->ProcessKeyboard(BACKWARD, time);
+        }
+    }
+    start = std::clock();
 }
 
-void cursor_pos_callback(GLFWwindow* winddow, double xpos, double ypos)
+void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    //camera->ProcessMouseMovement(xpos, ypos);
+    camera->ProcessMouseMovement(xpos, ypos);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    camera->ProcessMouseScroll(yoffset);
 }
