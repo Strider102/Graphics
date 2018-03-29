@@ -14,7 +14,9 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 const unsigned int numObjects = 1;
 static unsigned int curObject = 0;
-static std::clock_t start = 0;
+static std::clock_t start;
+static float lastX;
+static float lastY;
 
 Camera *camera = nullptr;
 
@@ -37,6 +39,8 @@ int init(GLFWwindow **windowLoc)
     }
     windowLoc[0] = window;
     glfwMakeContextCurrent(window);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_pos_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -58,7 +62,8 @@ void initObjects(unsigned int numObjects, Model **obj, GLuint *vao)
     //glBindVertexArray(vao[0]);
     //obj[0] = new Model("assets/cube.obj");
     glBindVertexArray(vao[0]);
-    obj[0] = new Model("assets/Pikachu.obj");
+    //obj[0] = new Model("assets/Pikachu.obj");
+    obj[0] = new Model("assets/Museum3.obj");
 }
 
 int main(){
@@ -91,6 +96,7 @@ int main(){
     while(!glfwWindowShouldClose(window)){
         // render
         // ------
+        start = std::clock();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.setMatrix("camera_pos", (float *)glm::value_ptr(camera->GetViewMatrix()));
@@ -128,26 +134,25 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         curObject = (curObject + 1) % numObjects;
     }
     float time = (std::clock() - start) / (float) CLOCKS_PER_SEC;
-    if (start > 0) {
-        if (key == GLFW_KEY_W) {
-            camera->ProcessKeyboard(FORWARD, time);
-        }
-        if (key == GLFW_KEY_A) {
-            camera->ProcessKeyboard(LEFT, time);
-        }
-        if (key == GLFW_KEY_D) {
-            camera->ProcessKeyboard(RIGHT, time);
-        }
-        if (key == GLFW_KEY_S) {
-            camera->ProcessKeyboard(BACKWARD, time);
-        }
+    if (key == GLFW_KEY_W) {
+        camera->ProcessKeyboard(FORWARD, time);
     }
-    start = std::clock();
+    if (key == GLFW_KEY_A) {
+        camera->ProcessKeyboard(LEFT, time);
+    }
+    if (key == GLFW_KEY_D) {
+        camera->ProcessKeyboard(RIGHT, time);
+    }
+    if (key == GLFW_KEY_S) {
+        camera->ProcessKeyboard(BACKWARD, time);
+    }
 }
 
 void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    camera->ProcessMouseMovement(xpos, ypos);
+    camera->ProcessMouseMovement(xpos - lastX, ypos - lastY);
+    lastX = xpos;
+    lastY = ypos;
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
