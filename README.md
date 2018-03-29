@@ -21,3 +21,7 @@ Attempts have been made to get an object loader working, but we are still learni
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/cube_rendering.png) <br />
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/pikachu_rendering.png) <br />
 Our model loader has been successfully implemented. It swaps between 2 models, a cube and pikachu, when spacebar is pressed. Pikachu looks fine but the cube is so big it looks weird and we thought it wasn't working for the longest time. In general, code was also cleaned up a bit so main is not so cluttered.
+
+# Week of 3/26/18
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/camera.png) <br />
+Our museum is loading and we have a functioning camera that can move in all directions as well as movement in all directions.
