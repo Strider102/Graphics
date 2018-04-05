@@ -63,7 +63,7 @@ void initObjects(unsigned int numObjects, Model **obj, GLuint *vao)
     //obj[0] = new Model("assets/cube.obj");
     glBindVertexArray(vao[0]);
     //obj[0] = new Model("assets/Pikachu.obj");
-    obj[0] = new Model("assets/Museum3.obj");
+    obj[0] = new Model("assets/MuseumT.obj");
 }
 
 int main(){
