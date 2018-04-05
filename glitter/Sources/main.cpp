@@ -14,7 +14,9 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 const unsigned int numObjects = 1;
 static unsigned int curObject = 0;
-static std::clock_t start;
+static double curFrame = 0;
+static double lastFrame = 0;
+static double deltaTime = 0;
 static float lastX = 0;
 static float lastY = 0;
 
@@ -91,15 +93,28 @@ int main(){
     GLuint *vao = (GLuint *) malloc(sizeof(GLuint *) * numObjects);
     initObjects(numObjects, obj, vao);
 
+    glm::mat4 model;
+
     // render loop
     // -----------
     while(!glfwWindowShouldClose(window)){
         // render
         // ------
-        start = std::clock();
+        curFrame = glfwGetTime();
+        deltaTime = curFrame - lastFrame;
+        lastFrame = curFrame;
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.setMatrix("camera_pos", (float *)glm::value_ptr(camera->GetViewMatrix()));
+        shader.use();
+
+        shader.setMatrix("projection", (float *)glm::value_ptr(glm::perspective(glm::radians(camera->Zoom), (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f)));
+        shader.setMatrix("view", (float *)glm::value_ptr(camera->GetViewMatrix()));
+
+        model = glm::mat4();
+        //model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+        //model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+        shader.setMatrix("model", (float *)glm::value_ptr(model));
 
         glBindVertexArray(vao[curObject]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
         obj[curObject]->Draw(shader);
@@ -133,24 +148,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
         curObject = (curObject + 1) % numObjects;
     }
-    float time = (std::clock() - start) / (float) CLOCKS_PER_SEC;
     if (key == GLFW_KEY_W) {
-        camera->ProcessKeyboard(FORWARD, time);
+        camera->ProcessKeyboard(FORWARD, deltaTime);
     }
     if (key == GLFW_KEY_A) {
-        camera->ProcessKeyboard(LEFT, time);
+        camera->ProcessKeyboard(LEFT, deltaTime);
     }
     if (key == GLFW_KEY_D) {
-        camera->ProcessKeyboard(RIGHT, time);
+        camera->ProcessKeyboard(RIGHT, deltaTime);
     }
     if (key == GLFW_KEY_S) {
-        camera->ProcessKeyboard(BACKWARD, time);
+        camera->ProcessKeyboard(BACKWARD, deltaTime);
     }
 }
 
 void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    camera->ProcessMouseMovement(xpos - lastX, ypos - lastY);
+    camera->ProcessMouseMovement(xpos - lastX, lastY - ypos);
     lastX = xpos;
     lastY = ypos;
 }
