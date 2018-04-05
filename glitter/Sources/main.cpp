@@ -15,8 +15,8 @@ const unsigned int SCR_HEIGHT = 600;
 const unsigned int numObjects = 1;
 static unsigned int curObject = 0;
 static std::clock_t start;
-static float lastX;
-static float lastY;
+static float lastX = 0;
+static float lastY = 0;
 
 Camera *camera = nullptr;
 
