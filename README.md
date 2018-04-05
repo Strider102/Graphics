@@ -25,3 +25,7 @@ Our model loader has been successfully implemented. It swaps between 2 models, a
 # Week of 3/26/18
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/camera.png) <br />
 Our museum is loading and we have a functioning camera that can move in all directions as well as movement in all directions.
+
+# Week of 4/2/18
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/textures1.png) <br />
+One color of our textures are loading on the walls and floors. Camera is fixed to include projection matrix.
