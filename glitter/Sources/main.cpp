@@ -12,8 +12,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 //settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-const unsigned int numObjects = 1;
-static unsigned int curObject = 0;
 static double curFrame = 0;
 static double lastFrame = 0;
 static double deltaTime = 0;
@@ -58,16 +56,6 @@ int init(GLFWwindow **windowLoc)
     return 0;
 }
 
-void initObjects(unsigned int numObjects, Model **obj, GLuint *vao)
-{
-    glGenVertexArrays(numObjects, vao);
-    //glBindVertexArray(vao[0]);
-    //obj[0] = new Model("assets/cube.obj");
-    glBindVertexArray(vao[0]);
-    //obj[0] = new Model("assets/Pikachu.obj");
-    obj[0] = new Model("assets/MuseumT.obj");
-}
-
 int main(){
 
     // glfw: initialize and configure
@@ -89,9 +77,8 @@ int main(){
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
-    Model **obj = (Model **) malloc(sizeof(Model **) * numObjects);
-    GLuint *vao = (GLuint *) malloc(sizeof(GLuint *) * numObjects);
-    initObjects(numObjects, obj, vao);
+    //Model obj = Model("assets/MuseumT.obj");
+    Model obj = Model("assets/test/planet.obj");
 
     glm::mat4 model;
 
@@ -116,8 +103,8 @@ int main(){
         //model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
         shader.setMatrix("model", (float *)glm::value_ptr(model));
 
-        glBindVertexArray(vao[curObject]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-        obj[curObject]->Draw(shader);
+        //glBindVertexArray(vao[curObject]); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+        obj.Draw(shader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -127,12 +114,6 @@ int main(){
 
     // optional: de-allocate all resources once they've outlived their purpose:
     // ------------------------------------------------------------------------
-    for (unsigned int i = 0; i < numObjects; i++) {
-        delete obj[i];
-    }
-    free(obj);
-    glDeleteVertexArrays(numObjects, vao);
-    free(vao);
     delete camera;
 
     // glfw: terminate, clearing all previously allocated GLFW resources
@@ -146,7 +127,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         exit(EXIT_SUCCESS);
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-        curObject = (curObject + 1) % numObjects;
+        //curObject = (curObject + 1) % numObjects;
     }
     if (key == GLFW_KEY_W) {
         camera->ProcessKeyboard(FORWARD, deltaTime);
