@@ -29,3 +29,7 @@ Our museum is loading and we have a functioning camera that can move in all dire
 # Week of 4/2/18
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/textures1.png) <br />
 One color of our textures are loading on the walls and floors. Camera is fixed to include projection matrix.
+
+# Week of 4/9/18
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/planet.png) <br />
+Did some cleanup. Tried loading in an outside model to see if our texture issue was with the code or our model. The test model we found of a planet works and looks great. We are looking to resolve issues with our model now.
