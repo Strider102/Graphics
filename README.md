@@ -46,4 +46,4 @@ Added comments and picutre frames to the museum. We still have issues with our g
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/statue.png) <br />
 While fooling around with lighting in the fragment shader, textures all of a sudden started working! Now the player has a flashlight and can walk and look around the museum with fully functioning textures. <br />
 <br />
-And that's it. You can look at the blender file all_assets/blender. A linux executable is in the src folder. Enjoy!
+And that's it. You can look at the blender file in all_assets/blender. A linux executable is in the src folder. Enjoy!
