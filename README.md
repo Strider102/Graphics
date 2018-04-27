@@ -36,7 +36,7 @@ Did some cleanup. Tried loading in an outside model to see if our texture issue 
 
 # Week of 4/23/18
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/museum.png) <br />
-Added comments and picutre frames to the museum. We still have issues with our generated models showing more than one color of the texture. As seen before, other models work, but we are having issues with blender and cannot find out what is wrong. In the src folder is all code and the most recent assets as well as the executable for our code. <br />
+Added comments and picutre frames to the museum. We still have issues with our generated models showing more than one color of the texture. As seen before, other models work, but we are having issues with blender and cannot find out what is wrong. In the src folder is all code and the most recent assets as well as the executable for our code.
 
 # Final Update!
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/pic1.png) <br />
