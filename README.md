@@ -37,5 +37,13 @@ Did some cleanup. Tried loading in an outside model to see if our texture issue 
 # Week of 4/23/18
 ![alt text](https://github.com/Strider102/Graphics/blob/master/images/museum.png) <br />
 Added comments and picutre frames to the museum. We still have issues with our generated models showing more than one color of the texture. As seen before, other models work, but we are having issues with blender and cannot find out what is wrong. In the src folder is all code and the most recent assets as well as the executable for our code. <br />
+
+# Final Update!
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/pic1.png) <br />
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/pic2.png) <br />
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/pic3.png) <br />
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/pic4.png) <br />
+![alt text](https://github.com/Strider102/Graphics/blob/master/images/statue.png) <br />
+While fooling around with lighting in the fragment shader, textures all of a sudden started working! Now the player has a flashlight and can walk and look around the museum with fully functioning textures. <br />
 <br />
-And that's it. It would be nice to have correct textures, but you can look in the blender file in our src/assets folder if you want to see how they should look. Enjoy!
+And that's it. You can look at the blender file in src/assets or all_assets/models. A linux executable is in the src folder. Enjoy!
