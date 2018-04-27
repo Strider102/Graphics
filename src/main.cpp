@@ -77,7 +77,7 @@ int main(){
     camera = new Camera();
 
     shader.use();
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     // initialize model
@@ -110,6 +110,16 @@ int main(){
         //model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
         //model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f)); // it's a bit too big for our scene, so scale it down
         shader.setMatrix("model", (float *)glm::value_ptr(model));
+
+        shader.setVec3("lightAmbient", (float *)glm::value_ptr(glm::vec4((0.25f, 0.25f, 0.25f))));
+        shader.setVec3("lightDiffuse", (float *)glm::value_ptr(glm::vec4((0.9f, 0.9f, 0.9f))));
+        shader.setVec3("lightPos", (float *)glm::value_ptr(camera->Position));
+        shader.setVec3("lightDir", (float *)glm::value_ptr(camera->Front));
+        shader.setFloat("lightCutOff", (float)glm::cos(glm::radians(15.0f)));
+        shader.setFloat("lightOutCutOff", (float)glm::cos(glm::radians(25.0f)));
+        shader.setFloat("lightConst", 1.0f);
+        shader.setFloat("lightLin", 0.09f);
+        shader.setFloat("lightQuad", 0.010f);
 
         obj.Draw(shader);
 
