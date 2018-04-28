@@ -5,6 +5,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "camera.h"
 
+#define BUFSIZE 5
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -18,6 +20,7 @@ static double deltaTime = 0;
 static bool first = true;
 static float lastX = 0;
 static float lastY = 0;
+static bool lightOn = false;
 
 Camera *camera = nullptr;
 
@@ -89,6 +92,8 @@ int main(){
     //Model obj = Model("assets/dik.obj");
 
     glm::mat4 model;
+    glm::vec3 frontBuffer[BUFSIZE];
+    int curBuf = -1;
 
     // render loop
     // -----------
@@ -111,10 +116,21 @@ int main(){
         //model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f)); // it's a bit too big for our scene, so scale it down
         shader.setMatrix("model", (float *)glm::value_ptr(model));
 
-        shader.setVec3("lightAmbient", (float *)glm::value_ptr(glm::vec4((0.25f, 0.25f, 0.25f))));
+        shader.setBool("lightOn", lightOn);
+        shader.setVec3("lightAmbient", (float *)glm::value_ptr(glm::vec4((0.15f, 0.15f, 0.15f))));
         shader.setVec3("lightDiffuse", (float *)glm::value_ptr(glm::vec4((0.9f, 0.9f, 0.9f))));
         shader.setVec3("lightPos", (float *)glm::value_ptr(camera->Position));
-        shader.setVec3("lightDir", (float *)glm::value_ptr(camera->Front));
+        if (curBuf < 0) {
+            for (unsigned int i = 0; i < BUFSIZE; i++) {
+                frontBuffer[i] = camera->Front;
+            }
+            shader.setVec3("lightDir", (float *) glm::value_ptr(frontBuffer[0]));
+            curBuf += 2;
+        } else {
+            frontBuffer[(curBuf + BUFSIZE - 1) % BUFSIZE] = camera->Front;
+            shader.setVec3("lightDir", (float *) glm::value_ptr(frontBuffer[curBuf]));
+            curBuf = (curBuf + 1) % BUFSIZE;
+        }
         shader.setFloat("lightCutOff", (float)glm::cos(glm::radians(15.0f)));
         shader.setFloat("lightOutCutOff", (float)glm::cos(glm::radians(25.0f)));
         shader.setFloat("lightConst", 1.0f);
@@ -156,6 +172,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
     if (key == GLFW_KEY_S) {
         camera->ProcessKeyboard(BACKWARD, deltaTime);
+    }
+    // turn flashlight on/off
+    if ((key == GLFW_KEY_F || key == GLFW_KEY_SPACE) && action == GLFW_PRESS) {
+        lightOn = !lightOn;
     }
 }
 

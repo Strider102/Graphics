@@ -6,6 +6,7 @@ in vec2 fTexCoord;
 
 out vec4 FragColor;
 
+uniform bool lightOn;
 uniform vec3 lightAmbient;
 uniform vec3 lightPos;
 uniform vec3 lightDir;
@@ -38,5 +39,9 @@ void main()
     ambient *= attenuation;
     diffuse *= attenuation;
 
-    FragColor = vec4(ambient + diffuse, 1.0);
+    if (lightOn) {
+        FragColor = vec4(ambient + diffuse, 1.0);
+    } else {
+        FragColor = vec4(ambient, 1.0);
+    }
 }
